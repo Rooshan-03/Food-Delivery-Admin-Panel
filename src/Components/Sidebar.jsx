@@ -1,0 +1,33 @@
+import React from "react";
+import { SidebarData } from "./SidebarData";
+import { Link, useLocation } from "react-router-dom";
+
+export default function Sidebar() {
+  const location = useLocation();
+
+  return (
+    <div className="h-screen w-60 bg-primary text-white inline-flex">
+      <ul className="w-full">
+        {SidebarData.map((val, key) => {
+          const isActive = location.pathname === val.link;
+
+          return (
+            <li
+              key={key}
+              className={`w-full flex items-center gap-8 p-3 cursor-pointer 
+                         border-b border-b-slate-100 transform transition-transform duration-200
+                         ${isActive 
+                            ? "bg-secondary border-l-4 border-white text-black" 
+                            : "hover:bg-secondary hover:border-l-4 hover:border-white hover:scale-105"}`}
+            >
+              <Link to={val.link} className="flex items-center gap-8 w-full">
+                <div>{val.icon}</div>
+                <div>{val.title}</div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
