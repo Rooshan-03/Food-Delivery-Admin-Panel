@@ -38,7 +38,7 @@ function Home() {
                     );
                   }
                 } catch (fetchError) {
-                  console.error("Fetch failed for", imageData.publicUrl, fetchError);
+                  console.error("Fetch failed for", item.item_image, fetchError);
                 }
               }
               return { ...item, item_image: imageData.publicUrl || "" };
@@ -55,21 +55,33 @@ function Home() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {items.map((item) => (
         <div
           key={item.id}
-          className="bg-white shadow-md rounded-2xl p-4 flex flex-col"
+          className="bg-white shadow-md rounded-2xl p-4 flex flex-col relative"
         >
-          <img
-            src={item.item_image}
-            alt={item.item_name}
-            className="w-full h-40 object-cover rounded-xl"
-            onError={(e) =>
-              console.log("Image load error for", item.item_image, e)
-            }
-            onLoad={(e) => console.log("Image loaded:", item.item_image)}
-          />
+          {/* Image with Availability Badge */}
+          <div className="relative">
+            <img
+              src={item.item_image}
+              alt={item.item_name}
+              className="w-full h-40 object-cover rounded-xl"
+              onError={(e) =>
+                console.log("Image load error for", item.item_image, e)
+              }
+              onLoad={(e) => console.log("Image loaded:", item.item_image)}
+            />
+            <span
+              className={`absolute top-2 left-2 px-3 py-1 rounded-full text-xs font-semibold ${
+                item.item_is_available
+                  ? "bg-green-100 bg-opacity-70 text-green-800"
+                  : "bg-red-100 bg-opacity-70 text-red-800"
+              }`}
+            >
+              {item.item_is_available ? "Available" : "Out of Stock"}
+            </span>
+          </div>
           <h2 className="text-xl font-bold mt-3">{item.item_name}</h2>
           <p className="text-gray-600 text-sm">{item.item_description}</p>
           <p className="text-sm mt-1">
@@ -89,13 +101,7 @@ function Home() {
               : "N/A"}
           </div>
           <div className="mt-2 flex justify-between items-center">
-            <span
-              className={`px-3 py-1 rounded-full text-xs ${
-                item.item_is_available ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
-              }`}
-            >
-              {item.item_is_available ? "Available" : "Out of Stock"}
-            </span>
+            
             <span className="text-xl">
               {item.item_is_favourite ? "❤️" : "🤍"}
             </span>
