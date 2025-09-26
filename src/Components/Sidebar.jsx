@@ -14,15 +14,15 @@ export default function Sidebar() {
           return (
             <li
               key={key}
-              className={`w-full flex items-center gap-8 p-3 cursor-pointer 
+              className={`group w-full flex items-center gap-8 p-3 cursor-pointer 
                          border-b border-b-slate-100 transform transition-transform duration-200
                          ${isActive 
                             ? "bg-secondary border-l-4 border-white text-black" 
-                            : "hover:bg-secondary hover:border-l-4 hover:border-white hover:scale-105"}`}
+                            : "hover:bg-secondary hover:border-l-4 hover:border-white"}`}
             >
               <Link to={val.link} className="flex items-center gap-8 w-full">
-                <div>{val.icon}</div>
-                <div>{val.title}</div>
+                <div className="group-hover:scale-125">{val.icon}</div>
+                <div className="group-hover:scale-125">{val.title}</div>
               </Link>
             </li>
           );
