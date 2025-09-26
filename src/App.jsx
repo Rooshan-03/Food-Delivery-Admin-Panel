@@ -5,15 +5,16 @@ import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 import ProtectedRoute from "./Components/ProtectedRoute"; // 👈 import
 import Update from "./Pages/Update";
-import Profile from "./Pages/Profile"
+import Profile from "./Pages/Profile";
 import Home from "./Pages/Home";
-import Setting from "./Pages/Setting"
+import Setting from "./Pages/Setting";
+
 function DashboardLayout({ children }) {
   return (
     <div className="flex">
-      {/* Sidebar */}
+      {/* Sidebar is now fixed, handled in Sidebar component */}
       <Sidebar />
-      <div className="flex-1">
+      <div className="flex-1 ml-60"> {/* Added ml-60 to offset the fixed sidebar */}
         <Header />
         <div className="pt-16 px-6 min-h-screen">{children}</div>
       </div>
@@ -35,7 +36,7 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Home/>
+                <Home />
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -46,7 +47,7 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Setting/>
+                <Setting />
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -57,7 +58,7 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Profile/>
+                <Profile />
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -68,7 +69,7 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardLayout>
-                <Update/>
+                <Update />
               </DashboardLayout>
             </ProtectedRoute>
           }

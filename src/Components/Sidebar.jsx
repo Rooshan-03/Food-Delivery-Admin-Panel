@@ -6,7 +6,8 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <div className="h-screen w-60 bg-primary text-white inline-flex">
+    <div className="fixed top-0 left-0 h-screen w-60 bg-primary text-white inline-flex z-50">
+      {/* z-50 ensures it stays above other content */}
       <ul className="w-full">
         {SidebarData.map((val, key) => {
           const isActive = location.pathname === val.link;
