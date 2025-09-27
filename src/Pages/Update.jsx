@@ -8,7 +8,7 @@ function Update() {
         <div className='shadow-xl w-24 h-24 rounded-full flex items-center justify-center'>
           <PersonIcon className='text-blue-400 ' style={{fontSize:"80px"}}/>
         </div>
-        <p className='text-sm text-blue-400 font-bold hover:cursor-pointer'>Update Profile Image</p>
+        <p className='text-sm mt-3 text-blue-400 font-bold hover:cursor-pointer'>Update Profile Image</p>
       </div>
     </div>
   )

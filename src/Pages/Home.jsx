@@ -1,9 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
+import Buttons from "../Components/Buttons";
 
 function Home() {
   const [items, setItems] = useState([]);
+const changeFavState = async (id) => {
+  try {
+    // Find the item to toggle
+    const item = items.find((item) => item.id === id);
+    if (!item) {
+      console.error("Item not found:", id);
+      return;
+    }
 
+    // Toggle the favorite status
+    const newFavState = !item.item_is_favourite;
+
+    // Update the item in Supabase
+    const { error } = await supabase
+      .from("items")
+      .update({ item_is_favourite: newFavState })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error updating favorite state:", error);
+      return;
+    }
+
+    // Update the local state to reflect the change
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, item_is_favourite: newFavState } : item
+      )
+    );
+  } catch (err) {
+    console.error("Unexpected error in changeFavState:", err);
+  }
+};
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -16,7 +49,7 @@ function Home() {
           const itemsWithImages = await Promise.all(
             data.map(async (item) => {
               console.log("Processing item_image:", item.item_image);
-              const fullPath = `item/${item.item_image}`; // Changed to 'item/'
+              const fullPath = `item/${item.item_image}`;
               const { data: imageData, error: storageError } = supabase.storage
                 .from("pictures")
                 .getPublicUrl(fullPath);
@@ -24,7 +57,7 @@ function Home() {
                 console.error("Storage error for", fullPath, storageError);
               } else {
                 console.log("Generated URL:", imageData.publicUrl);
-                // Test the URL with fetch
+
                 try {
                   const response = await fetch(imageData.publicUrl);
                   if (!response.ok) {
@@ -55,6 +88,8 @@ function Home() {
   }, []);
 
   return (
+    <div>
+      <Buttons/>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {items.map((item) => (
         <div
@@ -101,13 +136,14 @@ function Home() {
               : "N/A"}
           </div>
           <div className="mt-2 flex justify-between items-center">
-            
-            <span className="text-xl">
+
+            <span className="text-xl hover:cursor-pointer" onClick={()=>changeFavState(item.id)}>
               {item.item_is_favourite ? "❤️" : "🤍"}
             </span>
           </div>
         </div>
       ))}
+    </div>
     </div>
   );
 }
